@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title — приложение ASP.NET MVC</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        
+        
+    </head>
+    <body>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+        @Scripts.Render("~/Scripts/datatables.js")
+        
+        <header>
+            <section id="login">
+                Здравствуйте, <span class="username">@User.Identity.Name</span>!
+            </section>
+            <nav>
+                <div class="float-left"><h3>@Html.ActionLink("Create New", "Create", "documents")</h3></div>
+                <div class="float-right">
+                    @Html.Partial("PartialSearch")
+                </div>
+            </nav>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year — приложение ASP.NET MVC</p>
+                </div>
+            </div>
+        </footer>
+        
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

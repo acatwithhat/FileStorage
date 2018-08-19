@@ -1,0 +1,60 @@
+﻿
+<link type="text/css" rel="stylesheet" href="~/Content/datatables.css"/>
+<link type="text/css" rel="stylesheet" href="~/Content/jquery.dataTables.min.css" />
+@model IEnumerable<MvcApplication1.Models.Document>
+@{ ViewBag.Title = "Index"; }
+
+<table id="doctable" class="display dataTable" style="width:100%">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author.Login)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)|
+                @Html.ActionLink("Open", "OpenFile", new { id = item.Id }) |
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#doctable').DataTable({
+            order: [[2, "desc"]],
+            searching: false,
+            paging: false,
+            info: false,
+            columnDefs: [
+                { targets: [3], orderable: false }
+            ]
+        });
+    });
+    
+</script>

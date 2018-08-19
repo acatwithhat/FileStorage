@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" 
+                   assembly="MvcApplication1" namespace="MvcApplication1.Models">
+  <class name="Employee" table="Employee" dynamic-update="true" >
+    <cache usage="read-write"/>
+    <id name="Id" column="Id" type="int">
+      <generator class="increment" />
+    </id>
+    <property name="FirstName" />
+    <property name="LastName" />
+    <property name="Designation" />
+    <property name="BFile" type="System.Byte[]">
+      <column name="BFile" length="2147483647" not-null="false" />
+    </property>
+  </class>
+</hibernate-mapping>
