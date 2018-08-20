@@ -28,11 +28,6 @@ namespace MvcApplication1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(Author model, string returnUrl)
         {
-            /*if (ModelState.IsValid && WebSecurity.Login(model.Login, model.Password,
-                                        persistCookie: model.Remember))
-            {
-                return RedirectToAction("Index", "Home");
-            }*/
             using (ISession session = NHibertnateSession.OpenSession())
             {
                 var authors = session.Query<Author>().ToList();
@@ -41,25 +36,6 @@ namespace MvcApplication1.Controllers
                     if (item.Login == model.Login & item.Password == model.Password)
                     {
                         FormsAuthentication.SetAuthCookie(model.Login, true);
-                        /*
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                        1,                                     // ticket version
-                        model.Login,                              // authenticated username
-                        DateTime.Now,                          // issueDate
-                        DateTime.Now.AddMinutes(30),           // expiryDate
-                        false,                          // true to persist across browser sessions
-                        "",                              // can be used to store additional user data
-                        FormsAuthentication.FormsCookiePath); 
-
-                     
-                        string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-
-                        
-                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);*/
-
-                        // Your redirect logic
                         return Redirect("/documents");
                     }
                 }

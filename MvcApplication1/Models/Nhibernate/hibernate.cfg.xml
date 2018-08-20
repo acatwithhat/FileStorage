@@ -8,7 +8,7 @@
       NHibernate.Driver.SqlClientDriver
     </property>
     <property name="connection.connection_string">
-      Server=(LocalDB)\v11.0; AttachDbFilename="C:\Users\ANTON\documents\visual studio 2013\Projects\MvcApplication1\MvcApplication1\App_Data\Database.mdf";Integrated Security=True
+      Server=(LocalDB)\v11.0; AttachDbFilename=|DataDirectory|\Database.mdf; Integrated Security=True
     </property>
     <property name="dialect">
       NHibernate.Dialect.MsSql2012Dialect

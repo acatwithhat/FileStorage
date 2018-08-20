@@ -18,22 +18,7 @@ namespace MvcApplication1.Controllers
         //
         // GET: /Documents/
 
-
-        /*[Authorize]
-        public ActionResult Index(string name)
-        {
-            using (
-
-                ISession session = NHibertnateSession.OpenSession())
-            {
-                var documents = session.QueryOver<Document>().Where(c => c.Name == name).List();
-                //documents = documents.Fetch(c=>c.Author).As<L>
-
-                return View(documents);
-            }
-            //return View();
-        }*/
-
+        [Authorize]
         public ActionResult Index(string name)
         {
             try
@@ -88,6 +73,12 @@ namespace MvcApplication1.Controllers
                     add_doc.SetParameter("filename_new", doc.FileName);
                     add_doc.SetParameter("author_id", current_author[0]);
                     add_doc.ExecuteUpdate();
+
+                    if (docVM.File != null)
+                    {
+                        string fileName = docVM.Doc.Name+"_"+System.IO.Path.GetFileName(docVM.File.FileName);
+                        docVM.File.SaveAs(Server.MapPath("~/App_Data/Files/" + fileName));
+                    }
                     return View();
                 }
             }
@@ -117,33 +108,7 @@ namespace MvcApplication1.Controllers
             }
 
         }
-        [Authorize]
-       // [HttpDelete]
-        public ActionResult Delete(Document document)
-        {
-            try
-            {
-                using (ISession session = NHibertnateSession.OpenSession())
-                {
-                    var doc = session.Get<Document>(document.Id);
-                    string file = @"~/App_Data/Files/" + doc.Name + "_" + doc.FileName;
-                    if (System.IO.File.Exists(Request.MapPath(file)))
-                    {
-                        System.IO.File.Delete(Request.MapPath(file));
-                    }
-                    using (ITransaction transaction = session.BeginTransaction())
-                    {
-                        session.Delete(doc);
-                        transaction.Commit();
-                    }    
-                    return View("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
+       
 
         
 
