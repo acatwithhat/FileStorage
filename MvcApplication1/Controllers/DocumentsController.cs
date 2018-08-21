@@ -57,6 +57,7 @@ namespace MvcApplication1.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(DocumentVM docVM)
         {
             try
