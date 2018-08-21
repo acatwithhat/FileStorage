@@ -26,20 +26,21 @@ namespace MvcApplication1.Controllers
                 using (ISession session = NHibertnateSession.OpenSession())
                 {
                     
-                    var documents = session.Query<Document>().Fetch(c=>c.Author).ToList();
                     List<Document> documents_search = new List<Document>();
+
+                    IList<Document> documents = session.Query<Document>().Fetch(c => c.Author).ToList();
+
+                    if (name != null & name != "")
+                    {
+                        documents = session.QueryOver<Document>().Where(c => c.Name == name).Fetch(c => c.Author).Eager.List();
+                    }
+
+
                     foreach (var item in documents)
                     {
                         if (item.Name.Length > 30) item.Name = item.Name.Substring(0, 30)+"...";
                     }
-                    if (name != null & name!="")
-                    {
-                        foreach (var item in documents)
-                        {
-                            if (item.Name == name) documents_search.Add(item);
-                        }
-                        return View(documents_search);
-                    }
+                    
                     return View(documents);
                 }
             }

@@ -45,5 +45,13 @@ namespace MvcApplication1.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login");
+        }
+
     }
 }
