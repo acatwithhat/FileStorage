@@ -6,7 +6,30 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcApplication1.Models
 {
-    public class Document
+    public abstract class ADocument
+    {
+        public abstract int Id { get; set; }
+        public abstract Author Author { get; set; }
+        public abstract string Name { get; set; }
+        public abstract DateTime? Date { get; set; }
+        public abstract string FileName { get; set; }
+    }
+
+    public abstract class ADocumentCreator
+    {
+        public abstract ADocument FM_Create_Doc(DocumentVM doc);
+    }
+
+    public class DocumentCreator : ADocumentCreator
+    {
+        public override ADocument FM_Create_Doc(DocumentVM doc)
+        {
+            return new Document(doc);
+        }
+    }
+
+
+    public class Document:ADocument
     {
         public Document() { }
         public Document(DocumentVM docVM)
@@ -15,15 +38,13 @@ namespace MvcApplication1.Models
             this.Date = System.DateTime.Now;
             this.FileName = docVM.File.FileName;
         }
-        public virtual int Id { get; set; }
-        public virtual Author Author { get; set; }
+        public override int Id { get; set; }
+        public override Author Author { get; set; }
         [Required]
-        public virtual string Name { get; set; }
-        public virtual DateTime? Date { get; set; }
-        public virtual string FileName { get; set; }
+        public override string Name { get; set; }
+        public override DateTime? Date { get; set; }
+        public override string FileName { get; set; }
         
     }
 
-    
-    
 }

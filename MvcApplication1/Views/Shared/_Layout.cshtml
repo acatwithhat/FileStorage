@@ -17,8 +17,9 @@
         
         <header>
             <section id="login">
+                
                 Здравствуйте, <span class="username">@User.Identity.Name</span>!
-                <a href="@Url.Action("Logout", "Account", null)">Logout</a>
+                @if (User.Identity.IsAuthenticated) { <a href="@Url.Action("Logout", "Account", null)">Logout</a>}
             </section>
             <nav>
                 <div class="float-left"><h3>@Html.ActionLink("Create New", "Create", "documents")</h3></div>

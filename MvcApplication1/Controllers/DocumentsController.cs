@@ -65,11 +65,13 @@ namespace MvcApplication1.Controllers
             {
                 using (ISession session = NHibertnateSession.OpenSession())
                 {
-                    Document doc = new Document(docVM);
+                    ADocumentCreator DocCreator = new DocumentCreator();
+                    ADocument doc = DocCreator.FM_Create_Doc(docVM);
+
                     var add_doc = session.GetNamedQuery("AddDoc");
                     string cur_name = System.Web.HttpContext.Current.User.Identity.Name;
                     var current_author = session.QueryOver<Author>().Where(c => c.Login == cur_name).List();
-                    //add_doc.SetParameter("id_new", doc.Id);
+                    
                     add_doc.SetParameter("name_new", doc.Name);
                     add_doc.SetParameter("date_new", doc.Date);
                     add_doc.SetParameter("filename_new", doc.FileName);
@@ -78,8 +80,18 @@ namespace MvcApplication1.Controllers
 
                     if (docVM.File != null)
                     {
-                        string fileName = docVM.Doc.Name+"_"+System.IO.Path.GetFileName(docVM.File.FileName);
-                        docVM.File.SaveAs(Server.MapPath("~/App_Data/Files/" + fileName));
+                        string path = "~/App_Data/Files/";
+                        string fileName = docVM.Doc.Name+"_"
+                            +System.IO.Path.GetFileName(docVM.File.FileName);
+
+                        int i = 1;
+                        while (System.IO.File.Exists(HttpContext.Server.MapPath (path+fileName)))// same document name and same filename
+                        {
+                            fileName = i + fileName;
+                            i++;
+                        }
+                        //var a = System.IO.File.Exists(fileName);
+                        docVM.File.SaveAs(Server.MapPath(path+fileName));
                     }
                     return View();
                 }
