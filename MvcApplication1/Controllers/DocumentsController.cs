@@ -78,19 +78,13 @@ namespace MvcApplication1.Controllers
                     add_doc.SetParameter("author_id", current_author[0]);
                     add_doc.ExecuteUpdate();
 
+                    int doc_count = session.Query<Document>().Count();
+
                     if (docVM.File != null)
                     {
                         string path = "~/App_Data/Files/";
-                        string fileName = docVM.Doc.Name+"_"
+                        string fileName = doc_count+"_"
                             +System.IO.Path.GetFileName(docVM.File.FileName);
-
-                        int i = 1;
-                        while (System.IO.File.Exists(HttpContext.Server.MapPath (path+fileName)))// same document name and same filename
-                        {
-                            fileName = i + fileName;
-                            i++;
-                        }
-                        //var a = System.IO.File.Exists(fileName);
                         docVM.File.SaveAs(Server.MapPath(path+fileName));
                     }
                     return View();
@@ -111,7 +105,8 @@ namespace MvcApplication1.Controllers
                 using (ISession session = NHibertnateSession.OpenSession())
                 {
                     var doc = session.Get<Document>(document.Id);
-                    string file = @"~/App_Data/Files/"+doc.Name + "_"+doc.FileName;
+                    int doc_count = session.Query<Document>().Count();
+                    string file = @"~/App_Data/Files/"+doc_count + "_"+doc.FileName;
                     return File(file,System.Net.Mime.MediaTypeNames.Application.Octet,doc.FileName);
                 }
 
